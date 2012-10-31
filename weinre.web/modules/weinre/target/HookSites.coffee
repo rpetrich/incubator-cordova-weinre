@@ -34,18 +34,27 @@ HookSites.XMLHttpRequest_open             = HookLib.addHookSite XMLHttpRequest.p
 HookSites.XMLHttpRequest_send             = HookLib.addHookSite XMLHttpRequest.prototype, "send"
 HookSites.XMLHttpRequest_addEventListener = HookLib.addHookSite XMLHttpRequest.prototype, "addEventListener"
 
-if window.openDatabase
-    HookSites.window_openDatabase = HookLib.addHookSite window, "openDatabase"
+try
+    if window.openDatabase
+        HookSites.window_openDatabase = HookLib.addHookSite window, "openDatabase"
+catch e
+    console.log 'window.openDatabase is unavailable: ' + e
 
-if window.localStorage
-    HookSites.LocalStorage_setItem    = HookLib.addHookSite window.localStorage, "setItem"
-    HookSites.LocalStorage_removeItem = HookLib.addHookSite window.localStorage, "removeItem"
-    HookSites.LocalStorage_clear      = HookLib.addHookSite window.localStorage, "clear"
+try
+    if window.localStorage
+        HookSites.LocalStorage_setItem    = HookLib.addHookSite window.localStorage, "setItem"
+        HookSites.LocalStorage_removeItem = HookLib.addHookSite window.localStorage, "removeItem"
+        HookSites.LocalStorage_clear      = HookLib.addHookSite window.localStorage, "clear"
+catch e
+    console.log 'window.localStorage is unavailable: ' + e
 
-if window.sessionStorage
-    HookSites.SessionStorage_setItem    = HookLib.addHookSite window.sessionStorage, "setItem"
-    HookSites.SessionStorage_removeItem = HookLib.addHookSite window.sessionStorage, "removeItem"
-    HookSites.SessionStorage_clear      = HookLib.addHookSite window.sessionStorage, "clear"
+try
+    if window.sessionStorage
+        HookSites.SessionStorage_setItem    = HookLib.addHookSite window.sessionStorage, "setItem"
+        HookSites.SessionStorage_removeItem = HookLib.addHookSite window.sessionStorage, "removeItem"
+        HookSites.SessionStorage_clear      = HookLib.addHookSite window.sessionStorage, "clear"
+catch e
+    console.log 'window.sessionStorage is unavailable: ' + e
 
 #-------------------------------------------------------------------------------
 require("../common/MethodNamer").setNamesForClass(module.exports)

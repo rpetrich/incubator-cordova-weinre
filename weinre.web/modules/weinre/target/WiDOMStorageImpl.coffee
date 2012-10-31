@@ -90,35 +90,41 @@ module.exports = class WiDOMStorageImpl
 
     #---------------------------------------------------------------------------
     initialize: ->
-        if window.localStorage
-            Weinre.wi.DOMStorageNotify.addDOMStorage
-                id: 1
-                host: window.location.host
-                isLocalStorage: true
+        try
+            if window.localStorage
+                Weinre.wi.DOMStorageNotify.addDOMStorage
+                    id: 1
+                    host: window.location.host
+                    isLocalStorage: true
 
-            HookSites.LocalStorage_setItem.addHooks
-                after: -> _storageEventHandler storageArea: window.localStorage
+                HookSites.LocalStorage_setItem.addHooks
+                    after: -> _storageEventHandler storageArea: window.localStorage
 
-            HookSites.LocalStorage_removeItem.addHooks
-                after: -> _storageEventHandler storageArea: window.localStorage
+                HookSites.LocalStorage_removeItem.addHooks
+                    after: -> _storageEventHandler storageArea: window.localStorage
 
-            HookSites.LocalStorage_clear.addHooks
-                after: -> _storageEventHandler storageArea: window.localStorage
+                HookSites.LocalStorage_clear.addHooks
+                    after: -> _storageEventHandler storageArea: window.localStorage
+        catch e
+            Weinre.logWarning 'window.localStorage is unavailable: ' + e
 
-        if window.sessionStorage
-            Weinre.wi.DOMStorageNotify.addDOMStorage
-                id: 2
-                host: window.location.host
-                isLocalStorage: false
+        try
+            if window.sessionStorage
+                Weinre.wi.DOMStorageNotify.addDOMStorage
+                    id: 2
+                    host: window.location.host
+                    isLocalStorage: false
 
-            HookSites.SessionStorage_setItem.addHooks
-                after: -> _storageEventHandler storageArea: window.sessionStorage
+                HookSites.SessionStorage_setItem.addHooks
+                    after: -> _storageEventHandler storageArea: window.sessionStorage
 
-            HookSites.SessionStorage_removeItem.addHooks
-                after: -> _storageEventHandler storageArea: window.sessionStorage
+                HookSites.SessionStorage_removeItem.addHooks
+                    after: -> _storageEventHandler storageArea: window.sessionStorage
 
-            HookSites.SessionStorage_clear.addHooks
-                after: -> _storageEventHandler storageArea: window.sessionStorage
+                HookSites.SessionStorage_clear.addHooks
+                    after: -> _storageEventHandler storageArea: window.sessionStorage
+        catch e
+            Weinre.logWarning 'window.sessionStorage is unavailable: ' + e
 
         document.addEventListener "storage", _storageEventHandler, false
 
